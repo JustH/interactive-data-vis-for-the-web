@@ -1,0 +1,20 @@
+{
+  "name": "data-vis-book",
+  "version": "0.0.1",
+  "description": "code working through Interactive Data Visulization for the Web book. Jazzed up with some modern build tools and sass. ",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "d3",
+    "sass"
+  ],
+  "author": "Justin Hill",
+  "license": "ISC",
+  "dependencies": {
+    "d3": "^4.0.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.3.2"
+  }
+}
