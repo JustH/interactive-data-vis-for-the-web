@@ -12,23 +12,35 @@ var dataset = [
               ];
 var w = 500;
 var h = 100;
+var padding = 20;
 var svg = d3.select("body")
             .append("svg")
             .attr("width", w)
             .attr("height", h);
+
+var xScale = d3.scaleLinear().domain([0, d3.max(dataset, function(d) { return d[0]; })])
+                     .range([padding, w - padding * 2]);
+
+var yScale = d3.scaleLinear()
+                     .domain([0, d3.max(dataset, function(d) { return d[1]; })])
+                     .range([padding, h -  padding]);
+
+var rScale = d3.scaleLinear()
+                    .domain([0, d3.max(dataset, function(d) { return d[1]; })])
+                    .range([2, 5]);
 
 svg.selectAll("circle")
    .data(dataset)
    .enter()
    .append("circle")
    .attr("cx", function(d) {
-        return d[0];
+        return xScale(d[0]);
    })
    .attr("cy", function(d) {
-        return d[1];
+        return yScale(d[1]);
    })
    .attr("r", function(d) {
-    return Math.sqrt(h - d[1]);
+    return rScale(d[1]);
 });
 
 svg.selectAll("text")
@@ -39,10 +51,10 @@ svg.selectAll("text")
         return d[0] + "," + d[1];
    })
    .attr("x", function(d) {
-       return d[0];
+       return xScale(d[0]);
   })
   .attr("y", function(d) {
-       return d[1];
+       return yScale(d[1]);
   })
   .attr("font-family", "sans-serif")
   .attr("font-size", "11px")
