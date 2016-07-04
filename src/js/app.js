@@ -2,11 +2,13 @@ var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
                 11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
 var w = 600;
 var h = 250;
-var barPadding = 1;
+var maxValue = 100;
 var svg = d3.select("body")
             .append("svg")
             .attr("width", w)
             .attr("height", h);
+var easing = d3.easeCircle;
+var tDuration = 500;
 var xScale = d3.scaleBand()
                 .domain(d3.range(0, dataset.length))
                 .range([0, w])
@@ -56,14 +58,24 @@ d3.select("p")
     .on("click", function() {
 
         //New values for dataset
-        dataset = [ 11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
-                    5, 10, 13, 19, 21, 25, 22, 18, 15, 13 ];
+        var numValues = dataset.length;
+        dataset = [];
+        for (var i = 0; i < numValues; i++) {
+          var newNumber = Math.floor(Math.random() * maxValue);
+          dataset.push(newNumber);
+        }
+
+        yScale.domain([0, d3.max(dataset)]);
 
         //Update all rects
         svg.selectAll("rect")
            .data(dataset)
            .transition()
-           .duration(500)
+           .delay(function(d, i) {
+           return i / dataset.length * 1000;
+           })
+           .duration(tDuration)
+           .ease(easing)
            .attr("y", function(d) {
                 return h - yScale(d);
            })
@@ -77,7 +89,11 @@ d3.select("p")
         svg.selectAll("text")
            .data(dataset)
            .transition()
-           .duration(500)
+           .delay(function(d, i) {
+           return i / dataset.length * 1000;
+           })
+           .duration(tDuration)
+           .ease(easing)
            .text(function(d) {
                 return d;
            })
